@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScanActivity"
+    android:baselineAligned="false">
+
+    <LinearLayout
+        android:id="@+id/left_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2.5"
+        android:background="@drawable/logo_empy"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_quantity_docs"
+            android:layout_marginTop="25dp"
+            android:text="@string/txt_qantity_place"
+            style="@style/TextStyle"/>
+
+        <TextView
+            android:id="@+id/txt_quantity_document"
+            android:text="@string/txt_qantity"
+            style="@style/TextStyle" />
+
+        <TextView
+            android:id="@+id/txt_ost"
+            android:text="@string/res"
+            style="@style/TextStyle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/center_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="vertical"
+        android:background="@drawable/logo_empy">
+
+        <TextView
+            android:id="@+id/txt_quantity_pl"
+            style="@style/TextStyle"
+            android:layout_marginTop="25dp" />
+
+        <TextView
+            android:id="@+id/txt_quantity_places"
+            style="@style/TextStyle"/>
+
+        <TextView
+            android:id="@+id/txt_ostatok"
+            style="@style/TextStyle"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/display_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:background="@drawable/logo_empy"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/scan_text"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:cursorVisible="false"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:importantForAutofill="no"
+            tools:targetApi="o"
+            tools:ignore="LabelFor" />
+
+        <ImageView
+            android:id="@+id/image_ok_not"
+            android:layout_width="200dp"
+            android:layout_height="200dp"/>
+
+        <TextView
+            android:id="@+id/txt_signal"
+            android:layout_width="540dp"
+            android:layout_height="127dp"
+            android:layout_margin="30dp"
+            android:gravity="center"
+            android:textColor="@color/MyColor"
+            android:textSize="36sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
