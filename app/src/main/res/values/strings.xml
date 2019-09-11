@@ -6,4 +6,5 @@
     <string name="txt_qantity_place">Количество накладных</string>
     <string name="txt_qantity">Количество мест</string>
     <string name="res">Осталось</string>
+    <string name="btn_exit">ВЫХОД</string>
 </resources>

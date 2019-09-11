@@ -30,6 +30,17 @@
             android:id="@+id/txt_ost"
             android:text="@string/res"
             style="@style/TextStyle" />
+
+        <Button
+            android:id="@+id/btn_exit"
+            android:layout_width="160dp"
+            android:layout_height="70dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@color/MyColorBlack"
+            android:layout_marginTop="400dp"
+            android:text="@string/btn_exit"
+            style="@style/TextStyle"/>
     </LinearLayout>
 
     <LinearLayout
