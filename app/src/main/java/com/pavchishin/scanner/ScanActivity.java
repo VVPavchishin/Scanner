@@ -7,21 +7,31 @@ import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import static com.pavchishin.scanner.SecondActivity.DOC_QUANTITY;
 import static com.pavchishin.scanner.SecondActivity.LIST_PLACES;
+
 public class ScanActivity extends AppCompatActivity implements View.OnClickListener, SoundPool.OnLoadCompleteListener {
 
     final int MAX_STREAMS = 1;
+    final static String FILE_TMP = "tempFile.txt";
+    final static String TAG = "--->>>";
 
     SoundPool sp;
     int soundGood;
@@ -37,9 +47,12 @@ public class ScanActivity extends AppCompatActivity implements View.OnClickListe
     HashSet<String> listDouble;
 
     ImageView imageView;
+    Button exit;
 
     String scanValue;
     int count;
+
+    File file;
 
 
     @Override
@@ -67,6 +80,9 @@ public class ScanActivity extends AppCompatActivity implements View.OnClickListe
 
         imageView = findViewById(R.id.image_ok_not);
 
+        exit = findViewById(R.id.btn_exit);
+        exit.setOnClickListener(view -> this.finishAffinity());
+
         Intent intent = getIntent();
         int docQuantity = intent.getIntExtra(DOC_QUANTITY, 0);
         ArrayList<String> namesPlace = intent.getStringArrayListExtra(LIST_PLACES);
@@ -79,34 +95,49 @@ public class ScanActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         scanValue = String.valueOf(scannerField.getText());
-        count = Integer.parseInt((String) lastPlace.getText());
-        try {
-            Thread.sleep(200);
+        count = Integer.parseInt(lastPlace.getText().toString());
             scannerField.setText("");
             scannerStart(listDouble, scanValue);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            saveToFile(listDouble);
     }
 
-    private void scannerStart(HashSet<String> listDoublle, String scanValue) {
+    private void scannerStart(HashSet<String> listDouble, String scanValue) {
 
-        for (String name : listDoublle) {
+        for (String name : listDouble) {
             if (scanValue.contains(name)){
                 count--;
                 lastPlace.setText(String.valueOf(count));
                 infoField.setText(String.format("Штрихкод найден! %s", name));
                 imageView.setImageResource(R.drawable.ok_im);
                 infoField.setTextColor(Color.GREEN);
-                listDoublle.remove(name);
+                listDouble.remove(name);
                 sp.play(soundGood, 1, 1, 0, 0, 1);
                 break;
             } else {
                 infoField.setText(String.format("Штрихкод не найден! %s", scanValue));
+                sp.play(soundBad, 1, 1, 0, 0, 1);
                 infoField.setTextColor(Color.RED);
                 imageView.setImageResource(R.drawable.not_ok_im);
-                sp.play(soundBad, 1, 1, 0, 0, 1);
+
             }
+        }
+    }
+
+    private void saveToFile(HashSet<String> listDouble) {
+        File file = new File(this.getCacheDir(), FILE_TMP);
+        writeFile(file);
+    }
+
+    private void writeFile(File file) {
+        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                openFileOutput(file.getName(), MODE_APPEND)))){
+            Log.d(TAG, file.getName());
+            bw.write("Содержимое файла " + file.getName() + "\n");
+            Log.d(TAG, "Файл записан");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
