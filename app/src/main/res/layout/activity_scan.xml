@@ -18,29 +18,46 @@
         <TextView
             android:id="@+id/txt_quantity_docs"
             android:layout_marginTop="25dp"
+            android:layout_weight="0"
             android:text="@string/txt_qantity_place"
             style="@style/TextStyle"/>
 
         <TextView
             android:id="@+id/txt_quantity_document"
+            android:layout_weight="0"
             android:text="@string/txt_qantity"
             style="@style/TextStyle" />
 
         <TextView
             android:id="@+id/txt_ost"
+            android:layout_weight="0"
             android:text="@string/res"
             style="@style/TextStyle" />
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/show_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical" />
+        </ScrollView>
+
         <Button
             android:id="@+id/btn_exit"
-            android:layout_width="160dp"
-            android:layout_height="70dp"
-            android:gravity="center"
+            style="@style/TextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="0"
             android:layout_gravity="center"
             android:background="@color/MyColorBlack"
-            android:layout_marginTop="400dp"
-            android:text="@string/btn_exit"
-            style="@style/TextStyle"/>
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="@string/btn_exit" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,6 +80,7 @@
         <TextView
             android:id="@+id/txt_ostatok"
             style="@style/TextStyle"/>
+
     </LinearLayout>
 
 

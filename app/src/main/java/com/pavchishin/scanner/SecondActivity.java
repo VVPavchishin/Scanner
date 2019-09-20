@@ -1,3 +1,4 @@
+
 package com.pavchishin.scanner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -26,6 +28,7 @@ import java.util.Set;
 
 import static com.pavchishin.scanner.MainActivity.FILES_ARRAY;
 import static com.pavchishin.scanner.MainActivity.FILE_DIR;
+import static com.pavchishin.scanner.MainActivity.TAG;
 
 public class SecondActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,6 +43,8 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
     ArrayList<String> listFileNames;
     ArrayList<String> listPlaceNames;
 
+    int fileListLength;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +55,15 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         placeLayout = findViewById(R.id.layout_places);
 
         btnScan = findViewById(R.id.button_scan);
+        btnScan.setVisibility(View.INVISIBLE);
         btnScan.setOnClickListener(this);
 
         Intent intent = getIntent();
         listFileNames = intent.getStringArrayListExtra(FILES_ARRAY);
+
         for (String files : listFileNames) {
             fillNameLayout(files);
         }
-
         listPlaceNames = new ArrayList<>();
     }
 
@@ -83,25 +89,26 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 }
 
-                for (String list : placeList) {
-                    runOnUiThread(() -> {
-                        if(!listPlaceNames.contains(list)) {
-                            listPlaceNames.add(list);
-                            Button button = new Button(SecondActivity.this);
-                            button.setText(list);
-                            button.setTextSize(20);
-                            button.setTextColor(Color.WHITE);
-                            button.setBackgroundColor(Color.BLACK);
-                            placeLayout.addView(button);
-                        }
 
+                    runOnUiThread(() -> {
+                        for (String list : placeList) {
+                            if (!listPlaceNames.contains(list)) {
+                                listPlaceNames.add(list);
+                                Button button = new Button(SecondActivity.this);
+                                button.setText(list);
+                                button.setTextSize(20);
+                                button.setTextColor(Color.WHITE);
+                                button.setBackgroundColor(Color.BLACK);
+                                placeLayout.addView(button);
+                                fileListLength++;
+                            }
+                        }
+                        checkScanBtn(fileListLength);
                     });
-                }
+
 
                 String val = String.valueOf(workbook.getSheetAt(0).getRow(15).getCell(4));
-                //Log.d("tag", val);
                 runOnUiThread(() -> {
-
                     Button button = new Button(this);
                     button.setText(val);
                     button.setTextSize(20);
@@ -114,7 +121,16 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
             }
 
         }).start();
+
     }
+
+    private void checkScanBtn(int fileListLength) {
+        int num = placeLayout.getChildCount();
+        if (num == fileListLength){
+            btnScan.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     @Override
     public void onClick(View view) {

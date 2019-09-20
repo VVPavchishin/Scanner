@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     final static String FILE_DIR = "WorkFiles";
     final static String FILES_ARRAY = "ArrayFiles";
+    final static String TAG = "--->>>";
 
     private Button startButton;
     private ProgressBar progressBar;
