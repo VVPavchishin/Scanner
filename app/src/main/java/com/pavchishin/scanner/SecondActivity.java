@@ -34,6 +34,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
 
     final static String DOC_QUANTITY = "QuantityDoc";
     final static String LIST_PLACES = "NamePlace";
+    final static String PLACE_QUANTITY = "QuantityPlace";
 
     LinearLayout buttonLayout;
     LinearLayout placeLayout;
@@ -137,6 +138,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         Intent intent = new Intent(SecondActivity.this, ScanActivity.class);
         int numDocs = buttonLayout.getChildCount();
         intent.putExtra(DOC_QUANTITY, numDocs);
+        intent.putExtra(PLACE_QUANTITY, listPlaceNames.size());
         intent.putStringArrayListExtra(LIST_PLACES, listPlaceNames);
         startActivity(intent);
     }

@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +18,19 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import static com.pavchishin.scanner.MainActivity.TEMP_DIR;
+import static com.pavchishin.scanner.MainActivity.TEMP_FILE;
+import static com.pavchishin.scanner.MainActivity.TAG;
 import static com.pavchishin.scanner.SecondActivity.DOC_QUANTITY;
 import static com.pavchishin.scanner.SecondActivity.LIST_PLACES;
+import static com.pavchishin.scanner.SecondActivity.PLACE_QUANTITY;
 
 public class ScanActivity extends AppCompatActivity implements View.OnClickListener, SoundPool.OnLoadCompleteListener {
 
@@ -47,6 +56,7 @@ public class ScanActivity extends AppCompatActivity implements View.OnClickListe
 
     String scanValue;
     int count;
+    int placeQuantity;
 
 
     @Override
@@ -78,15 +88,19 @@ public class ScanActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = getIntent();
         int docQuantity = intent.getIntExtra(DOC_QUANTITY, 0);
+        placeQuantity = intent.getIntExtra(PLACE_QUANTITY, 0);
         ArrayList<String> namesPlace = intent.getStringArrayListExtra(LIST_PLACES);
+
         listDouble = new HashSet<>(namesPlace);
         quantityDocs.setText(String.valueOf(docQuantity));
-        quantityPlace.setText(String.valueOf(listDouble.size()));
+        quantityPlace.setText(String.valueOf(placeQuantity));
         lastPlace.setText(String.valueOf(listDouble.size()));
 
         showOnDisplay(listDouble);
 
         exitBtn.setOnClickListener(view -> {
+            File path = new File(this.getCacheDir() + File.separator + TEMP_DIR);
+            new File(path, TEMP_FILE).getAbsoluteFile().delete();
             finishAffinity();
             System.exit(0);
         });
@@ -131,6 +145,20 @@ public class ScanActivity extends AppCompatActivity implements View.OnClickListe
                 sp.play(soundBad, 1, 1, 0, 0, 1);
             }
         }
+        writeToFile(listDouble);
+    }
+
+    private void writeToFile(HashSet<String> listDouble) {
+        File path = new File(this.getCacheDir() + File.separator + TEMP_DIR, TEMP_FILE);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))){
+            bw.write(placeQuantity + "\n");
+            for (String str : listDouble){
+                bw.write(str + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void removeFromShow() {

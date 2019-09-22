@@ -102,7 +102,7 @@
             android:cursorVisible="false"
             android:ems="10"
             android:gravity="center"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp"
             android:textStyle="bold"
